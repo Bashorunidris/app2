@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIS Database Sync Center</title>
+    <style>
+    :root {
+    --primary-color: #2563eb;
+    --secondary-color: #1e40af;
+    --background-color: #f8fafc;
+    --surface-color: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --success-color: #22c55e;
+    --error-color: #ef4444;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+    background: var(--background-color);
+}
+
+.sidebar {
+    background: var(--surface-color);
+    padding: 2rem;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-links li a {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.nav-links li.active a,
+.nav-links li a:hover {
+    background: #f1f5f9;
+    color: var(--primary-color);
+}
+
+.content {
+    padding: 2rem;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.search input {
+    width: 300px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--border-radius);
+    background: var(--surface-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sync-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.sync-btn:hover {
+    background: var(--secondary-color);
+}
+
+.forms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-card {
+    background: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.sync-status {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: var(--border-radius);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success-color);
+}
+
+.sync-panel {
+    background: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.sync-list {
+    margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+}
+
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="his-logo.png" alt="HIS Logo">
+                <h2>HIS Sync Center</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="#forms">Forms</a></li>
+                <li><a href="#submissions">Submissions</a></li>
+                <li><a href="#analytics">Analytics</a></li>
+                <li><a href="#settings">Settings</a></li>
+            </ul>
+            <div class="sync-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Synced</span>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header>
+                <div class="search">
+                    <input type="text" placeholder="Search forms...">
+                </div>
+                <div class="user-info">
+                    <span class="user-email"></span>
+                    <button class="sync-btn">Sync Now</button>
+                </div>
+            </header>
+
+            <div class="forms-grid">
+                <!-- Forms will be dynamically added here -->
+            </div>
+
+            <div class="sync-panel">
+                <h3>Recent Syncs</h3>
+                <div class="sync-list">
+                    <!-- Sync history will be shown here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <script>
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBudtF-qE8XnrkoYDgiC1zptyQnJs9C96s",
+    authDomain: "hisdatabase-1cdd8.firebaseapp.com",
+    projectId: "hisdatabase-1cdd8",
+    storageBucket: "hisdatabase-1cdd8.firebasestorage.app",
+    messagingSenderId: "612083839754",
+    appId: "1:612083839754:web:b75f5210479183999a40f3",
+    measurementId: "G-T3QXBC57WJ"
+};
+
+// Authentication Configuration
+const AUTH_CONFIG = {
+    VALID_EMAILS: ['toluwaoloyede27@gmail.com', 'toluwanioloyede27@gmail.com', 'bashorunidris18@gmail.com'],
+    VALID_PIN: 'h1sense0'
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+class App2SyncCenter {
+    constructor() {
+        this.currentUser = null;
+        this.setupEndpoints();
+        this.setupFirebaseListeners();
+    }
+
+    validateAuth(email, pin) {
+        return AUTH_CONFIG.VALID_EMAILS.includes(email) && pin === AUTH_CONFIG.VALID_PIN;
+    }
+
+    setupEndpoints() {
+        // Form Creation Endpoint
+        app.post('/api/forms/create', async (req, res) => {
+            const { email, pin, formData } = req.body;
+
+            if (!this.validateAuth(email, pin)) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+
+            try {
+                const docRef = await db.collection('forms').add({
+                    ...formData,
+                    createdBy: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                res.json({ success: true, formId: docRef.id });
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        });
+
+        // Form Retrieval Endpoint
+        app.get('/api/forms/:code', async (req, res) => {
+            try {
+                const snapshot = await db.collection('forms')
+                    .where('uniqueCode', '==', req.params.code)
+                    .get();
+
+                if (snapshot.empty) {
+                    return res.status(404).json({ error: 'Form not found' });
+                }
+
+                const form = snapshot.docs[0].data();
+                res.json(form);
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        });
+
+        // Form Submission Endpoint
+        app.post('/api/forms/submit', async (req, res) => {
+            const { formCode, submission } = req.body;
+
+            try {
+                const formSnapshot = await db.collection('forms')
+                    .where('uniqueCode', '==', formCode)
+                    .get();
+
+                if (formSnapshot.empty) {
+                    return res.status(404).json({ error: 'Form not found' });
+                }
+
+                const formDoc = formSnapshot.docs[0];
+                await db.collection('forms')
+                    .doc(formDoc.id)
+                    .collection('submissions')
+                    .add({
+                        ...submission,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                res.json({ success: true });
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        });
+
+        // Sync Status Endpoint
+        app.get('/api/sync/status', async (req, res) => {
+            const { email, pin } = req.query;
+
+            if (!this.validateAuth(email, pin)) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+
+            try {
+                const stats = await this.getSyncStats(email);
+                res.json(stats);
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        });
+    }
+
+    setupFirebaseListeners() {
+        // Listen for form changes
+        db.collection('forms').onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                this.handleFormChange(change);
+            });
+        });
+
+        // Listen for submission changes
+        db.collectionGroup('submissions').onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                this.handleSubmissionChange(change);
+            });
+        });
+    }
+
+    async handleFormChange(change) {
+        const form = change.doc.data();
+        const formId = change.doc.id;
+
+        switch (change.type) {
+            case 'added':
+                await this.notifyFormCreation(form);
+                break;
+            case 'modified':
+                await this.notifyFormUpdate(formId, form);
+                break;
+            case 'removed':
+                await this.notifyFormDeletion(formId);
+                break;
+        }
+    }
+
+    async handleSubmissionChange(change) {
+        const submission = change.doc.data();
+        const formId = change.doc.ref.parent.parent.id;
+
+        if (change.type === 'added') {
+            await this.notifyNewSubmission(formId, submission);
+        }
+    }
+
+    async notifyFormCreation(form) {
+        console.log('New form created:', form.uniqueCode);
+    }
+
+    async notifyFormUpdate(formId, form) {
+        console.log('Form updated:', formId);
+    }
+
+    async notifyFormDeletion(formId) {
+        console.log('Form deleted:', formId);
+    }
+
+    async notifyNewSubmission(formId, submission) {
+        console.log('New submission for form:', formId);
+    }
+
+    async getSyncStats(email) {
+        const stats = {
+            totalForms: 0,
+            totalSubmissions: 0,
+            lastSync: new Date().toISOString()
+        };
+
+        const formsSnapshot = await db.collection('forms')
+            .where('createdBy', '==', email)
+            .get();
+
+        stats.totalForms = formsSnapshot.size;
+
+        for (const formDoc of formsSnapshot.docs) {
+            const submissionsSnapshot = await formDoc.ref
+                .collection('submissions')
+                .get();
+            stats.totalSubmissions += submissionsSnapshot.size;
+        }
+
+        return stats;
+    }
+}
+
+// Initialize the sync center
+const syncCenter = new App2SyncCenter();
+</script>
+
+    </script>
+</body>
+</html>
