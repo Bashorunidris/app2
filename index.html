@@ -736,9 +736,9 @@ details select {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-#back-to-mainApp {
+#back-to-main {
     padding: 8px 16px;
-    background: #4a90e2;
+    background: #f8f9fa;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -1337,8 +1337,7 @@ details select {
         <section id="books-page">
             <!-- Header -->
             <header>
-               <button id="back-to-mainApp">← Back </button>
-
+                <button id="back-to-main">← Back</button>
                 <div class="header-title">
                     <img src="books-icon.png" alt="Books Icon">
                     <h1>Books</h1>
@@ -1362,7 +1361,38 @@ details select {
             <div class="book-shelf">
                 <!-- First Row -->
                 <div class="book-row">
+                    <!-- Book Card 1 -->
+                    <a href="#book-content" class="book-link">
+                        <div class="book-card" style="background: var(--user-selected-color)">
+                            <h4>Book Name</h4>
+                            <div class="book-details">
+                                <small>100 Pages</small>
+                                <small>PDF</small>
+                            </div>
+                        </div>
+                    </a>
 
+                    <!-- Book Card 2 -->
+                    <a href="#book-content" class="book-link">
+                        <div class="book-card" style="background: var(--user-selected-color)">
+                            <h4>Book Name</h4>
+                            <div class="book-details">
+                                <small>150 Pages</small>
+                                <small>Nigerian notebook</small>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Book Card 3 -->
+                    <a href="#book-content" class="book-link">
+                        <div class="book-card" style="background: var(--user-selected-color)">
+                            <h4>Book Name</h4>
+                            <div class="book-details">
+                                <small>200 Pages</small>
+                                <small>PDF</small>
+                            </div>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Second Row -->
@@ -1382,9 +1412,13 @@ details select {
 
             <!-- Book Menu Bar -->
             <nav class="book-menu">
+                <button>Upload</button>
+                <button>Share</button>
+                <button>AI</button>
+                <label>
                     Autosave
                     <input type="checkbox">
-
+                </label>
             </nav>
 
             <!-- Floating Editor Button -->
@@ -1744,61 +1778,93 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
+// DOM Elements
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const authSection = document.getElementById('authSection');
+const mainApp = document.getElementById('mainApp');
+
+// Password Toggle Functionality
+document.querySelectorAll('.password-toggle input[type="checkbox"]').forEach(toggle => {
+    toggle.addEventListener('change', function() {
+        const passwordField = this.closest('.password-field').querySelector('input[type="password"]');
+        passwordField.type = this.checked ? 'text' : 'password';
+    });
+});
+
+// Registration Handler
+registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    try {
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+
+        // Save additional user data
+        await db.collection('users').doc(userCredential.user.uid).set({
+            name: name,
+            email: email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        showMainApp();
+    } catch (error) {
+        alert(`Registration error: ${error.message}`);
+    }
+});
+
 // Login Handler
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-
     try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
 
-        // Get user data from Firestore
-        const userDoc = await db.collection('users').doc(user.uid).get();
-
-        if (userDoc.exists) {
-            showMainApp();
-        } else {
-            throw new Error('User data not found');
-        }
+        await auth.signInWithEmailAndPassword(email, password);
+        showMainApp();
     } catch (error) {
         alert(`Login error: ${error.message}`);
     }
 });
 
 // Auth State Observer
-auth.onAuthStateChanged(async (user) => {
+auth.onAuthStateChanged(user => {
     if (user) {
-        try {
-            const userDoc = await db.collection('users').doc(user.uid).get();
-            if (userDoc.exists) {
-                showMainApp();
-                loadUserData(user);
-            } else {
-                auth.signOut();
-                showAuth();
-            }
-        } catch (error) {
-            console.error('Error checking user data:', error);
-            auth.signOut();
-            showAuth();
-        }
+        showMainApp();
+        loadUserData(user);
     } else {
         showAuth();
     }
 });
 
+// Forgot Password Handler
+document.querySelector('.forgot-link').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = prompt('Enter your email address:');
+
+    if (email) {
+        try {
+            await auth.sendPasswordResetEmail(email);
+            alert('Password reset email sent! Check your inbox.');
+        } catch (error) {
+            alert(`Error: ${error.message}`);
+        }
+    }
+});
+
 // Helper Functions
 function showMainApp() {
-    document.getElementById('authSection').classList.add('hidden');
-    document.getElementById('mainApp').classList.remove('hidden');
+    authSection.classList.add('hidden');
+    mainApp.classList.remove('hidden');
 }
 
 function showAuth() {
-    document.getElementById('authSection').classList.remove('hidden');
-    document.getElementById('mainApp').classList.add('hidden');
+    authSection.classList.remove('hidden');
+    mainApp.classList.add('hidden');
 }
 
 async function loadUserData(user) {
@@ -1810,12 +1876,21 @@ async function loadUserData(user) {
         const userName = document.querySelector('.main-app h3');
         const userEmail = document.querySelector('.main-app p');
 
-        if (userName && userData.name) userName.textContent = userData.name;
-        if (userEmail && userData.email) userEmail.textContent = userData.email;
+        if (userName) userName.textContent = userData.name;
+        if (userEmail) userEmail.textContent = userData.email;
     } catch (error) {
         console.error('Error loading user data:', error);
     }
 }
+
+// Logout Handler
+window.logout = function() {
+    auth.signOut().then(() => {
+        showAuth();
+    }).catch(error => {
+        alert(`Logout error: ${error.message}`);
+    });
+};
 
  // Main PDF Page Controls
 function openPDFPage() {
