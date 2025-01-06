@@ -736,9 +736,9 @@ details select {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-#back-to-main {
+#back-to-mainApp {
     padding: 8px 16px;
-    background: #f8f9fa;
+    background: #4a90e2;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -1337,7 +1337,8 @@ details select {
         <section id="books-page">
             <!-- Header -->
             <header>
-                <button id="back-to-main">← Back</button>
+               <button id="back-to-mainApp">← Back </button>
+
                 <div class="header-title">
                     <img src="books-icon.png" alt="Books Icon">
                     <h1>Books</h1>
@@ -1361,38 +1362,7 @@ details select {
             <div class="book-shelf">
                 <!-- First Row -->
                 <div class="book-row">
-                    <!-- Book Card 1 -->
-                    <a href="#book-content" class="book-link">
-                        <div class="book-card" style="background: var(--user-selected-color)">
-                            <h4>Book Name</h4>
-                            <div class="book-details">
-                                <small>100 Pages</small>
-                                <small>PDF</small>
-                            </div>
-                        </div>
-                    </a>
 
-                    <!-- Book Card 2 -->
-                    <a href="#book-content" class="book-link">
-                        <div class="book-card" style="background: var(--user-selected-color)">
-                            <h4>Book Name</h4>
-                            <div class="book-details">
-                                <small>150 Pages</small>
-                                <small>Nigerian notebook</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- Book Card 3 -->
-                    <a href="#book-content" class="book-link">
-                        <div class="book-card" style="background: var(--user-selected-color)">
-                            <h4>Book Name</h4>
-                            <div class="book-details">
-                                <small>200 Pages</small>
-                                <small>PDF</small>
-                            </div>
-                        </div>
-                    </a>
                 </div>
 
                 <!-- Second Row -->
@@ -1412,13 +1382,9 @@ details select {
 
             <!-- Book Menu Bar -->
             <nav class="book-menu">
-                <button>Upload</button>
-                <button>Share</button>
-                <button>AI</button>
-                <label>
                     Autosave
                     <input type="checkbox">
-                </label>
+
             </nav>
 
             <!-- Floating Editor Button -->
@@ -1479,6 +1445,7 @@ details select {
 </div>
 
             <!-- PDF Format Content -->
+
             <div id="pdf-format">
                 <input type="text" placeholder="Page Topic">
                 <nav class="page-navigation">
@@ -1486,10 +1453,14 @@ details select {
                     <span>Page 1 of 100</span>
                     <button>Next →</button>
                 </nav>
+                <div class="writing-area">
                 <textarea placeholder="Enter your text here..."></textarea>
             </div>
+            </div>
+
 
             <!-- Nigerian Notebook Format -->
+
             <div id="nigerian-format">
                 <input type="text" placeholder="Page Topic">
                 <nav class="page-navigation">
@@ -1773,93 +1744,61 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// DOM Elements
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-const authSection = document.getElementById('authSection');
-const mainApp = document.getElementById('mainApp');
-
-// Password Toggle Functionality
-document.querySelectorAll('.password-toggle input[type="checkbox"]').forEach(toggle => {
-    toggle.addEventListener('change', function() {
-        const passwordField = this.closest('.password-field').querySelector('input[type="password"]');
-        passwordField.type = this.checked ? 'text' : 'password';
-    });
-});
-
-// Registration Handler
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    try {
-        const name = document.getElementById('registerName').value;
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-
-        // Save additional user data
-        await db.collection('users').doc(userCredential.user.uid).set({
-            name: name,
-            email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        showMainApp();
-    } catch (error) {
-        alert(`Registration error: ${error.message}`);
-    }
-});
-
 // Login Handler
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    try {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-        await auth.signInWithEmailAndPassword(email, password);
-        showMainApp();
+    try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // Get user data from Firestore
+        const userDoc = await db.collection('users').doc(user.uid).get();
+
+        if (userDoc.exists) {
+            showMainApp();
+        } else {
+            throw new Error('User data not found');
+        }
     } catch (error) {
         alert(`Login error: ${error.message}`);
     }
 });
 
 // Auth State Observer
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async (user) => {
     if (user) {
-        showMainApp();
-        loadUserData(user);
+        try {
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                showMainApp();
+                loadUserData(user);
+            } else {
+                auth.signOut();
+                showAuth();
+            }
+        } catch (error) {
+            console.error('Error checking user data:', error);
+            auth.signOut();
+            showAuth();
+        }
     } else {
         showAuth();
     }
 });
 
-// Forgot Password Handler
-document.querySelector('.forgot-link').addEventListener('click', async (e) => {
-    e.preventDefault();
-    const email = prompt('Enter your email address:');
-
-    if (email) {
-        try {
-            await auth.sendPasswordResetEmail(email);
-            alert('Password reset email sent! Check your inbox.');
-        } catch (error) {
-            alert(`Error: ${error.message}`);
-        }
-    }
-});
-
 // Helper Functions
 function showMainApp() {
-    authSection.classList.add('hidden');
-    mainApp.classList.remove('hidden');
+    document.getElementById('authSection').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
 }
 
 function showAuth() {
-    authSection.classList.remove('hidden');
-    mainApp.classList.add('hidden');
+    document.getElementById('authSection').classList.remove('hidden');
+    document.getElementById('mainApp').classList.add('hidden');
 }
 
 async function loadUserData(user) {
@@ -1871,21 +1810,12 @@ async function loadUserData(user) {
         const userName = document.querySelector('.main-app h3');
         const userEmail = document.querySelector('.main-app p');
 
-        if (userName) userName.textContent = userData.name;
-        if (userEmail) userEmail.textContent = userData.email;
+        if (userName && userData.name) userName.textContent = userData.name;
+        if (userEmail && userData.email) userEmail.textContent = userData.email;
     } catch (error) {
         console.error('Error loading user data:', error);
     }
 }
-
-// Logout Handler
-window.logout = function() {
-    auth.signOut().then(() => {
-        showAuth();
-    }).catch(error => {
-        alert(`Logout error: ${error.message}`);
-    });
-};
 
  // Main PDF Page Controls
 function openPDFPage() {
@@ -2398,6 +2328,11 @@ async function loadNotebooks() {
     });
 }
 
+// Navigation Handlers
+backToMainApp.addEventListener('click', () => {
+    booksPage.style.display = 'block';
+    bookContent.style.display = 'none';
+});
 // Search Functionality
 searchInput.addEventListener('input', async (e) => {
     const searchTerm = e.target.value.toLowerCase();
@@ -2623,6 +2558,311 @@ function debounce(func, wait) {
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
     };
+}
+ // Format-specific editor initialization
+function initializePDFFormat(notebook) {
+    const pdfFormat = document.getElementById('pdf-format');
+    const editorDropdown = document.querySelector('.editor-dropdown');
+    const pageCount = notebook.pageCount;
+    let currentPage = 1;
+    let pageContents = new Map(); // Store page contents
+
+    // Show floating editor only for PDF format
+    editorDropdown.style.display = 'block';
+
+    // Initialize editor tools
+    initializeEditorTools();
+
+    // Set up navigation with content preservation
+    const prevButton = pdfFormat.querySelector('button:first-of-type');
+    const nextButton = pdfFormat.querySelector('button:last-of-type');
+    const pageSpan = pdfFormat.querySelector('span');
+    const textarea = pdfFormat.querySelector('textarea');
+
+    function updatePageDisplay() {
+        pageSpan.textContent = `Page ${currentPage} of ${pageCount}`;
+    }
+
+    // Save current page content before navigation
+    function saveCurrentPage() {
+        pageContents.set(currentPage, textarea.value);
+    }
+
+    // Load saved page content
+    function loadSavedPage() {
+        textarea.value = pageContents.get(currentPage) || '';
+    }
+
+    prevButton.onclick = () => {
+        if (currentPage > 1) {
+            saveCurrentPage();
+            currentPage--;
+            updatePageDisplay();
+            loadSavedPage();
+            loadPageContent(notebook.id, currentPage);
+        }
+    };
+
+    nextButton.onclick = () => {
+        if (currentPage < pageCount) {
+            saveCurrentPage();
+            currentPage++;
+            updatePageDisplay();
+            loadSavedPage();
+            loadPageContent(notebook.id, currentPage);
+        }
+    };
+
+    updatePageDisplay();
+    loadPageContent(notebook.id, currentPage);
+}
+
+function initializeNigerianFormat(notebook) {
+    const nigerianFormat = document.getElementById('nigerian-format');
+    const editorDropdown = document.querySelector('.editor-dropdown');
+    const pageCount = notebook.pageCount;
+    let currentPage = 1;
+    let pageContents = new Map(); // Store page contents
+
+    // Hide floating editor for Nigerian format
+    editorDropdown.style.display = 'none';
+
+    // Initialize Nigerian format tools
+    initializeNigerianTools();
+
+    // Set up navigation with content preservation
+    const prevButton = nigerianFormat.querySelector('button:first-of-type');
+    const nextButton = nigerianFormat.querySelector('button:last-of-type');
+    const pageSpan = nigerianFormat.querySelector('span');
+    const textarea = nigerianFormat.querySelector('.notebook-text');
+
+    function updatePageDisplay() {
+        pageSpan.textContent = `Page ${currentPage} of ${pageCount}`;
+    }
+
+    // Save current page content before navigation
+    function saveCurrentPage() {
+        pageContents.set(currentPage, textarea.value);
+    }
+
+    // Load saved page content
+    function loadSavedPage() {
+        textarea.value = pageContents.get(currentPage) || '';
+    }
+
+    prevButton.onclick = () => {
+        if (currentPage > 1) {
+            saveCurrentPage();
+            currentPage--;
+            updatePageDisplay();
+            loadSavedPage();
+            loadPageContent(notebook.id, currentPage);
+        }
+    };
+
+    nextButton.onclick = () => {
+        if (currentPage < pageCount) {
+            saveCurrentPage();
+            currentPage++;
+            updatePageDisplay();
+            loadSavedPage();
+            loadPageContent(notebook.id, currentPage);
+        }
+    };
+
+    updatePageDisplay();
+    loadPageContent(notebook.id, currentPage);
+}
+   class EditorTools {
+    constructor(writingArea) {
+        this.writingArea = writingArea;
+        this.history = [];
+        this.historyIndex = -1;
+        this.preferences = this.loadPreferences();
+
+        this.initializeTools();
+        this.setupKeyboardShortcuts();
+    }
+
+    initializeTools() {
+        // Font Size Tool
+        this.initializeFontSizeTool();
+        this.initializeStyleTools();
+        this.initializeTableTool();
+        this.initializeImageTool();
+        this.initializeJotterTool();
+        this.initializeCodeTools();
+        this.initializeHistoryTools();
+        this.initializeSettings();
+    }
+
+    initializeFontSizeTool() {
+        const fontSizeButton = document.querySelector('[title="Font Size"]');
+        const sizeDropdown = this.createDropdown([
+            { label: 'Small', value: '12px' },
+            { label: 'Normal', value: '16px' },
+            { label: 'Large', value: '20px' },
+            { label: 'Custom...', value: 'custom' }
+        ]);
+
+        fontSizeButton.onclick = (e) => {
+            const selection = window.getSelection();
+            if (selection.toString().length > 0) {
+                sizeDropdown.style.display = 'block';
+                sizeDropdown.style.left = `${e.pageX}px`;
+                sizeDropdown.style.top = `${e.pageY}px`;
+            }
+        };
+    }
+
+    initializeStyleTools() {
+        const styleButtons = {
+            bold: document.querySelector('[title="Bold"]'),
+            underline: document.querySelector('[title="Underline"]'),
+            font: document.querySelector('[title="Text Style"]')
+        };
+
+        // Bold Implementation
+        styleButtons.bold.onclick = () => {
+            this.execCommand('bold');
+            this.toggleActiveState(styleButtons.bold);
+        };
+
+        // Font Family Implementation
+        const fontFamilies = ['Arial', 'Times New Roman', 'Courier New', 'Georgia'];
+        const fontDropdown = this.createFontDropdown(fontFamilies);
+        styleButtons.font.appendChild(fontDropdown);
+    }
+
+    initializeTableTool() {
+        const tableButton = document.querySelector('[title="Add Table"]');
+        const gridSelector = this.createTableGridSelector();
+
+        tableButton.onclick = (e) => {
+            gridSelector.style.display = 'block';
+            gridSelector.style.left = `${e.pageX}px`;
+            gridSelector.style.top = `${e.pageY}px`;
+        };
+    }
+
+    initializeImageTool() {
+        const imageZone = this.createImageDropZone();
+        this.writingArea.appendChild(imageZone);
+
+        imageZone.ondragover = (e) => {
+            e.preventDefault();
+            imageZone.classList.add('drag-over');
+        };
+
+        imageZone.ondrop = (e) => {
+            e.preventDefault();
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                this.insertImage(file);
+            }
+        };
+    }
+
+    initializeJotterTool() {
+        const jotterButton = document.querySelector('[title="List"]');
+        const jotterPopup = this.createJotterPopup();
+
+        jotterButton.onclick = () => {
+            jotterPopup.style.display = 'block';
+            this.loadJotterNotes();
+        };
+    }
+
+    initializeCodeTools() {
+        const generateButton = document.querySelector('[title="Code"]');
+        const searchButton = document.querySelector('[title="Link"]');
+
+        generateButton.onclick = () => this.generateSharingCode();
+        searchButton.onclick = () => this.searchSharingCode();
+    }
+
+    // Helper Methods
+    createDropdown(options) {
+        const dropdown = document.createElement('div');
+        dropdown.className = 'editor-dropdown';
+        options.forEach(option => {
+            const item = document.createElement('div');
+            item.textContent = option.label;
+            item.onclick = () => {
+                if (option.value === 'custom') {
+                    const size = prompt('Enter custom size (px):', '16');
+                    if (size) this.execCommand('fontSize', `${size}px`);
+                } else {
+                    this.execCommand('fontSize', option.value);
+                }
+            };
+            dropdown.appendChild(item);
+        });
+        return dropdown;
+    }
+
+    createTableGridSelector() {
+        const grid = document.createElement('div');
+        grid.className = 'table-grid-selector';
+        for (let i = 0; i < 25; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.onmouseover = () => this.previewTableSize(Math.floor(i / 5) + 1, (i % 5) + 1);
+            cell.onclick = () => this.insertTable(Math.floor(i / 5) + 1, (i % 5) + 1);
+            grid.appendChild(cell);
+        }
+        return grid;
+    }
+
+    async generateSharingCode() {
+        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const content = {
+            text: this.writingArea.innerHTML,
+            page: this.currentPage,
+            timestamp: Date.now()
+        };
+        await firebase.firestore().collection('shared').doc(code).set(content);
+        alert(`Your sharing code: ${code}`);
+    }
+
+    async searchSharingCode() {
+        const code = prompt('Enter sharing code:');
+        if (code) {
+            const doc = await firebase.firestore().collection('shared').doc(code).get();
+            if (doc.exists) {
+                const content = doc.data();
+                this.writingArea.innerHTML = content.text;
+            } else {
+                alert('Invalid code or content not found.');
+            }
+        }
+    }
+
+    execCommand(command, value = null) {
+        document.execCommand(command, false, value);
+        this.saveToHistory();
+    }
+
+    saveToHistory() {
+        this.history = this.history.slice(0, this.historyIndex + 1);
+        this.history.push(this.writingArea.innerHTML);
+        this.historyIndex++;
+        this.saveToLocalStorage();
+    }
+
+    undo() {
+        if (this.historyIndex > 0) {
+            this.historyIndex--;
+            this.writingArea.innerHTML = this.history[this.historyIndex];
+        }
+    }
+
+    redo() {
+        if (this.historyIndex < this.history.length - 1) {
+            this.historyIndex++;
+            this.writingArea.innerHTML = this.history[this.historyIndex];
+        }
+    }
 }
 
 // Notification System
