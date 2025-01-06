@@ -1039,6 +1039,49 @@ details select {
         transform: translateY(0);
     }
 }
+  .stats-board {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.stats-board table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.stats-board th {
+    background: #f5f5f5;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+}
+
+.stats-board td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s ease;
+}
+
+.stats-board td.updated {
+    animation: highlight 1s ease;
+}
+
+@keyframes highlight {
+    0% { background-color: #fff; }
+    50% { background-color: #e3f2fd; }
+    100% { background-color: #fff; }
+}
+
+.stats-board h2 {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 1.5em;
+}
 
 @media (max-width: 768px) {
     .editor-tools-dropdown {
@@ -1640,23 +1683,23 @@ details select {
         </section>
 
         <!-- Stats Board -->
-        <section>
-            <article>
-                <h2>App Statistics</h2>
-                <table border="1">
-                    <tr>
-                        <th>Books Created</th>
-                        <th>Total Users</th>
-                        <th>Feedback Count</th>
-                    </tr>
-                    <tr>
-                        <td>1,234</td>
-                        <td>5,678</td>
-                        <td>910</td>
-                    </tr>
-                </table>
-            </article>
-        </section>
+<section class="stats-board">
+    <article>
+        <h2>App Statistics</h2>
+        <table>
+            <tr>
+                <th>Books Created</th>
+                <th>Total Users</th>
+                <th>Feedback Count</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>
+    </article>
+</section>
 
         <!-- Small Ad Banner -->
         <section>
@@ -2862,6 +2905,66 @@ function initializeNigerianFormat(notebook) {
             this.historyIndex++;
             this.writingArea.innerHTML = this.history[this.historyIndex];
         }
+    }
+}
+// Stats Board Controller
+class StatsBoard {
+    constructor() {
+        this.statsTable = document.querySelector('.stats-board table');
+        this.updateInterval = 60000; // Update every minute
+        this.initializeStats();
+    }
+
+    async initializeStats() {
+        await this.updateStats();
+        setInterval(() => this.updateStats(), this.updateInterval);
+    }
+
+    async updateStats() {
+        const stats = await this.fetchStats();
+        this.updateUI(stats);
+    }
+
+    async fetchStats() {
+        const db = firebase.firestore();
+
+        // Get books count
+        const booksCount = await db.collection('notebooks')
+            .get()
+            .then(snap => snap.size);
+
+        // Get users count
+        const usersCount = await db.collection('users')
+            .get()
+            .then(snap => snap.size);
+
+        // Get feedback count
+        const feedbackCount = await db.collection('feedback')
+            .get()
+            .then(snap => snap.size);
+
+        return {
+            booksCreated: booksCount,
+            totalUsers: usersCount,
+            feedbackCount: feedbackCount
+        };
+    }
+
+    updateUI(stats) {
+        const cells = this.statsTable.querySelectorAll('td');
+        cells[0].textContent = this.formatNumber(stats.booksCreated);
+        cells[1].textContent = this.formatNumber(stats.totalUsers);
+        cells[2].textContent = this.formatNumber(stats.feedbackCount);
+
+        // Add animation class
+        cells.forEach(cell => {
+            cell.classList.add('updated');
+            setTimeout(() => cell.classList.remove('updated'), 1000);
+        });
+    }
+
+    formatNumber(num) {
+        return num.toLocaleString();
     }
 }
 
