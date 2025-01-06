@@ -2403,11 +2403,6 @@ async function loadNotebooks() {
     });
 }
 
-// Navigation Handlers
-backToMainApp.addEventListener('click', () => {
-    booksPage.style.display = 'block';
-    bookContent.style.display = 'none';
-});
 // Search Functionality
 searchInput.addEventListener('input', async (e) => {
     const searchTerm = e.target.value.toLowerCase();
@@ -2748,195 +2743,111 @@ function initializeNigerianFormat(notebook) {
     updatePageDisplay();
     loadPageContent(notebook.id, currentPage);
 }
-   class EditorTools {
-    constructor(writingArea) {
-        this.writingArea = writingArea;
-        this.history = [];
-        this.historyIndex = -1;
-        this.preferences = this.loadPreferences();
 
-        this.initializeTools();
-        this.setupKeyboardShortcuts();
-    }
+// Editor Tools Implementation
+function initializeEditorTools() {
+    const tools = document.querySelectorAll('.tool-cell');
+    const writingArea = document.querySelector('.writing-area');
 
-    initializeTools() {
-        // Font Size Tool
-        this.initializeFontSizeTool();
-        this.initializeStyleTools();
-        this.initializeTableTool();
-        this.initializeImageTool();
-        this.initializeJotterTool();
-        this.initializeCodeTools();
-        this.initializeHistoryTools();
-        this.initializeSettings();
-    }
-
-    initializeFontSizeTool() {
-        const fontSizeButton = document.querySelector('[title="Font Size"]');
-        const sizeDropdown = this.createDropdown([
-            { label: 'Small', value: '12px' },
-            { label: 'Normal', value: '16px' },
-            { label: 'Large', value: '20px' },
-            { label: 'Custom...', value: 'custom' }
-        ]);
-
-        fontSizeButton.onclick = (e) => {
-            const selection = window.getSelection();
-            if (selection.toString().length > 0) {
-                sizeDropdown.style.display = 'block';
-                sizeDropdown.style.left = `${e.pageX}px`;
-                sizeDropdown.style.top = `${e.pageY}px`;
-            }
-        };
-    }
-
-    initializeStyleTools() {
-        const styleButtons = {
-            bold: document.querySelector('[title="Bold"]'),
-            underline: document.querySelector('[title="Underline"]'),
-            font: document.querySelector('[title="Text Style"]')
-        };
-
-        // Bold Implementation
-        styleButtons.bold.onclick = () => {
-            this.execCommand('bold');
-            this.toggleActiveState(styleButtons.bold);
-        };
-
-        // Font Family Implementation
-        const fontFamilies = ['Arial', 'Times New Roman', 'Courier New', 'Georgia'];
-        const fontDropdown = this.createFontDropdown(fontFamilies);
-        styleButtons.font.appendChild(fontDropdown);
-    }
-
-    initializeTableTool() {
-        const tableButton = document.querySelector('[title="Add Table"]');
-        const gridSelector = this.createTableGridSelector();
-
-        tableButton.onclick = (e) => {
-            gridSelector.style.display = 'block';
-            gridSelector.style.left = `${e.pageX}px`;
-            gridSelector.style.top = `${e.pageY}px`;
-        };
-    }
-
-    initializeImageTool() {
-        const imageZone = this.createImageDropZone();
-        this.writingArea.appendChild(imageZone);
-
-        imageZone.ondragover = (e) => {
-            e.preventDefault();
-            imageZone.classList.add('drag-over');
-        };
-
-        imageZone.ondrop = (e) => {
-            e.preventDefault();
-            const file = e.dataTransfer.files[0];
-            if (file && file.type.startsWith('image/')) {
-                this.insertImage(file);
-            }
-        };
-    }
-
-    initializeJotterTool() {
-        const jotterButton = document.querySelector('[title="List"]');
-        const jotterPopup = this.createJotterPopup();
-
-        jotterButton.onclick = () => {
-            jotterPopup.style.display = 'block';
-            this.loadJotterNotes();
-        };
-    }
-
-    initializeCodeTools() {
-        const generateButton = document.querySelector('[title="Code"]');
-        const searchButton = document.querySelector('[title="Link"]');
-
-        generateButton.onclick = () => this.generateSharingCode();
-        searchButton.onclick = () => this.searchSharingCode();
-    }
-
-    // Helper Methods
-    createDropdown(options) {
-        const dropdown = document.createElement('div');
-        dropdown.className = 'editor-dropdown';
-        options.forEach(option => {
-            const item = document.createElement('div');
-            item.textContent = option.label;
-            item.onclick = () => {
-                if (option.value === 'custom') {
-                    const size = prompt('Enter custom size (px):', '16');
-                    if (size) this.execCommand('fontSize', `${size}px`);
-                } else {
-                    this.execCommand('fontSize', option.value);
-                }
-            };
-            dropdown.appendChild(item);
+    tools.forEach(tool => {
+        tool.addEventListener('click', () => {
+            const command = getCommandFromTool(tool);
+            executeCommand(command, writingArea);
         });
-        return dropdown;
+    });
+}
+
+function initializeNigerianTools() {
+    const tools = document.querySelectorAll('.holes .editor-tool');
+    const writingArea = document.querySelector('.nigerian-page .writing-area');
+
+    tools.forEach(tool => {
+        tool.addEventListener('click', () => {
+            const command = getCommandFromTool(tool);
+            executeCommand(command, writingArea);
+        });
+    });
+}
+
+function getCommandFromTool(tool) {
+    const title = tool.getAttribute('title');
+    switch (title) {
+        case 'Font Size':
+            return { command: 'fontSize', value: prompt('Enter font size (1-7):', '3') };
+        case 'Bold':
+            return { command: 'bold' };
+        case 'Underline':
+            return { command: 'underline' };
+        case 'Text Style':
+            return { command: 'fontName', value: prompt('Enter font name:', 'Arial') };
+        case 'Add Table':
+            return { command: 'insertTable' };
+        case 'Undo':
+            return { command: 'undo' };
+        case 'Redo':
+            return { command: 'redo' };
+        case 'Add Image':
+            return { command: 'insertImage' };
+        case 'List':
+            return { command: 'insertUnorderedList' };
+        case 'Link':
+            return { command: 'createLink', value: prompt('Enter URL:', 'http://') };
+        case 'Code':
+            return { command: 'formatBlock', value: 'pre' };
+        default:
+            return null;
+    }
+}
+
+function executeCommand(commandObj, target) {
+    if (!commandObj) return;
+
+    if (commandObj.command === 'insertTable') {
+        const rows = prompt('Enter number of rows:', '3');
+        const cols = prompt('Enter number of columns:', '3');
+        insertTable(target, rows, cols);
+        return;
     }
 
-    createTableGridSelector() {
-        const grid = document.createElement('div');
-        grid.className = 'table-grid-selector';
-        for (let i = 0; i < 25; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'grid-cell';
-            cell.onmouseover = () => this.previewTableSize(Math.floor(i / 5) + 1, (i % 5) + 1);
-            cell.onclick = () => this.insertTable(Math.floor(i / 5) + 1, (i % 5) + 1);
-            grid.appendChild(cell);
+    if (commandObj.command === 'insertImage') {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = (e) => handleImageUpload(e, target);
+        input.click();
+        return;
+    }
+
+    document.execCommand(commandObj.command, false, commandObj.value);
+}
+
+function insertTable(target, rows, cols) {
+    const table = document.createElement('table');
+    table.border = '1';
+
+    for (let i = 0; i < rows; i++) {
+        const row = table.insertRow();
+        for (let j = 0; j < cols; j++) {
+            const cell = row.insertCell();
+            cell.contentEditable = true;
+            cell.textContent = `Cell ${i}-${j}`;
         }
-        return grid;
     }
 
-    async generateSharingCode() {
-        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-        const content = {
-            text: this.writingArea.innerHTML,
-            page: this.currentPage,
-            timestamp: Date.now()
+    target.appendChild(table);
+}
+
+async function handleImageUpload(event, target) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '100%';
+            target.appendChild(img);
         };
-        await firebase.firestore().collection('shared').doc(code).set(content);
-        alert(`Your sharing code: ${code}`);
-    }
-
-    async searchSharingCode() {
-        const code = prompt('Enter sharing code:');
-        if (code) {
-            const doc = await firebase.firestore().collection('shared').doc(code).get();
-            if (doc.exists) {
-                const content = doc.data();
-                this.writingArea.innerHTML = content.text;
-            } else {
-                alert('Invalid code or content not found.');
-            }
-        }
-    }
-
-    execCommand(command, value = null) {
-        document.execCommand(command, false, value);
-        this.saveToHistory();
-    }
-
-    saveToHistory() {
-        this.history = this.history.slice(0, this.historyIndex + 1);
-        this.history.push(this.writingArea.innerHTML);
-        this.historyIndex++;
-        this.saveToLocalStorage();
-    }
-
-    undo() {
-        if (this.historyIndex > 0) {
-            this.historyIndex--;
-            this.writingArea.innerHTML = this.history[this.historyIndex];
-        }
-    }
-
-    redo() {
-        if (this.historyIndex < this.history.length - 1) {
-            this.historyIndex++;
-            this.writingArea.innerHTML = this.history[this.historyIndex];
-        }
+        reader.readAsDataURL(file);
     }
 }
 
