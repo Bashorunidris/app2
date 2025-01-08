@@ -1334,7 +1334,37 @@ details select {
     }
 }
 
-  
+  .writing-area {
+    width: 100%;
+    margin: 20px 0;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.writing-area textarea {
+    width: 100%;
+    min-height: 300px;
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background: transparent;
+    resize: vertical;
+}
+
+.writing-area textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #4CAF50;
+}
+
+.writing-area textarea::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -1609,38 +1639,7 @@ details select {
             <div class="book-shelf">
                 <!-- First Row -->
                 <div class="book-row">
-                    <!-- Book Card 1 -->
-                    <a href="#book-content" class="book-link">
-                        <div class="book-card" style="background: var(--user-selected-color)">
-                            <h4>Book Name</h4>
-                            <div class="book-details">
-                                <small>100 Pages</small>
-                                <small>PDF</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- Book Card 2 -->
-                    <a href="#book-content" class="book-link">
-                        <div class="book-card" style="background: var(--user-selected-color)">
-                            <h4>Book Name</h4>
-                            <div class="book-details">
-                                <small>150 Pages</small>
-                                <small>Nigerian notebook</small>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- Book Card 3 -->
-                    <a href="#book-content" class="book-link">
-                        <div class="book-card" style="background: var(--user-selected-color)">
-                            <h4>Book Name</h4>
-                            <div class="book-details">
-                                <small>200 Pages</small>
-                                <small>PDF</small>
-                            </div>
-                        </div>
-                    </a>
+                    
                 </div>
 
                 <!-- Second Row -->
@@ -1660,9 +1659,7 @@ details select {
 
             <!-- Book Menu Bar -->
             <nav class="book-menu">
-                <button>Upload</button>
-                <button>Share</button>
-                <button>AI</button>
+                
                 <label>
                     Autosave
                     <input type="checkbox">
