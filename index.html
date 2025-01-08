@@ -1039,6 +1039,106 @@ details select {
         transform: translateY(0);
     }
 }
+.feedback-trigger {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.feedback-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.feedback-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.feedback-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.rating-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.stars i {
+    cursor: pointer;
+    color: #ddd;
+    font-size: 24px;
+    transition: color 0.2s ease;
+}
+
+.stars i.active {
+    color: #ffd700;
+}
+
+.feedback-type select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.feedback-content textarea {
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.feedback-content button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.feedback-content button[type="submit"] {
+    background: #28a745;
+    color: white;
+}
+
+.close-btn {
+    background: #dc3545;
+    color: white;
+}
 
 @media (max-width: 768px) {
     .editor-tools-dropdown {
@@ -1087,6 +1187,154 @@ details select {
         font-size: 14px;
     }
 }
+
+.pdf-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.upload-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.pdf-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.pdf-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.pdf-card:hover {
+    transform: translateY(-3px);
+}
+
+.pdf-info {
+    margin-bottom: 15px;
+}
+
+.pdf-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.pdf-date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.pdf-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.pdf-action-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.view-btn {
+    background: #007bff;
+    color: white;
+}
+
+.download-btn {
+    background: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    background: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.success {
+    background: #4CAF50;
+}
+
+.error {
+    background: #f44336;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+  
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -1580,81 +1828,64 @@ details select {
     </div>
 </div>
 
-            <button onclick="openPDFPage()" class="pdf-trigger">my PDF</button>
-         <!-- PDF Page -->
-        <div class="pdf-page" id="pdfPage">
-            <div class="pdf-header">
-                <button onclick="closePDFPage()">← Back</button>
-                <h1>My PDFs</h1>
+            
+          <!-- Add this to your HTML where you want the feedback button to appear -->
+<button id="feedbackBtn" class="feedback-trigger">
+    <i class="fas fa-comments"></i> Feedback
+</button>
 
-                <!-- AI Assistant Dropdown -->
-                <div class="ai-dropdown">
-                    <button onclick="toggleAI()" class="ai-trigger">
-                        <i class="fas fa-robot"></i> AI Assistant
-                    </button>
-                    <div class="ai-content" id="aiContent">
-                        <!-- AI Features -->
-                        <div class="ai-feature" onclick="activateFeature('text')">
-                            <i class="fas fa-comment-alt"></i>
-                            <div>
-                                <h4>Ask Questions</h4>
-                                <small>Get instant answers about your PDF</small>
-                            </div>
-                        </div>
-
-                        <div class="ai-feature" onclick="activateFeature('voice')">
-                            <i class="fas fa-microphone"></i>
-                            <div>
-                                <h4>Voice Input</h4>
-                                <small>Speak your questions</small>
-                            </div>
-                        </div>
-
-                        <div class="ai-feature" onclick="activateFeature('image')">
-                            <i class="fas fa-image"></i>
-                            <div>
-                                <h4>Image Analysis</h4>
-                                <small>Get insights from images</small>
-                            </div>
-                        </div>
-
-                        <div class="ai-feature" onclick="activateFeature('video')">
-                            <i class="fas fa-video"></i>
-                            <div>
-                                <h4>Video Analysis</h4>
-                                <small>Analyze video content</small>
-                            </div>
-                        </div>
-
-                        <div class="ai-feature" onclick="activateFeature('quiz')">
-                            <i class="fas fa-tasks"></i>
-                            <div>
-                                <h4>Generate Quiz</h4>
-                                <small>Create questions from content</small>
-                            </div>
-                        </div>
-                    </div>
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="feedback-modal">
+    <div class="feedback-content">
+        <h2>Share Your Feedback</h2>
+        <form id="feedbackForm">
+            <div class="rating-container">
+                <span>Rate your experience:</span>
+                <div class="stars">
+                    <i class="fas fa-star" data-rating="1"></i>
+                    <i class="fas fa-star" data-rating="2"></i>
+                    <i class="fas fa-star" data-rating="3"></i>
+                    <i class="fas fa-star" data-rating="4"></i>
+                    <i class="fas fa-star" data-rating="5"></i>
                 </div>
             </div>
-
-            <!-- Upload Section -->
-            <div class="upload-section">
-                <input type="file" id="pdfUpload" accept=".pdf" hidden>
-                <label for="pdfUpload">
-                    <i class="fas fa-cloud-upload-alt fa-3x"></i>
-                    <h3>Upload PDF</h3>
-                    <p>or drag and drop files here</p>
-                </label>
+            <div class="feedback-type">
+                <select required>
+                    <option value="">Select Feedback Type</option>
+                    <option value="bug"Problem  Report</option>
+                    <option value="feature">Feature Request</option>
+                    <option value="improvement">Improvement Suggestion</option>
+                    <option value="other">Other</option>
+                </select>
             </div>
+            <textarea placeholder="Tell us your thoughts..." required></textarea>
+            <button type="submit">Submit Feedback</button>
+            <button type="button" class="close-btn">Close</button>
+        </form>
+    </div>
+</div>
 
-            <!-- PDF List -->
-            <div class="pdf-list" id="pdfList">
-                <!-- PDF cards will be generated here -->
-            </div>
-        </div>
-            <button>Share</button>
-        </nav>
+ <!-- Add this to your HTML where you want the PDF upload feature -->
+<div class="pdf-upload-section">
+    <button id="uploadPdfBtn" class="upload-trigger">
+    <i class="fas fa-file-pdf"></i> My Pdf
+    </button>
+    
+    <!-- Add this section where you want the PDF features to appear -->
+<div class="pdf-container">
+    <div class="pdf-header">
+        <h2>My PDF Library</h2>
+        <button id="uploadPdfBtn" class="upload-btn">
+            <i class="fas fa-plus"></i> Upload New PDF
+        </button>
+    </div>
+    
+    <div class="pdf-list" id="pdfList">
+        <!-- PDFs will be listed here -->
+    </div>
+</div>
 
+ 
         <!-- Main Ad Banner -->
         <section>
             <marquee scrolldelay="15000" width="500" height="70">
@@ -1762,7 +1993,7 @@ details select {
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <!-- Add PDF.js library for better PDF handling -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-        <script>
+     <script>
     // Initialize Firebase with your config
 const firebaseConfig = {
     apiKey: "AIzaSyAK8T_ceUGR1B0ovxFLxPYs6HWQYewittw",
@@ -1892,356 +2123,11 @@ window.logout = function() {
     });
 };
 
- // Main PDF Page Controls
-function openPDFPage() {
-    const pdfPage = document.getElementById('pdfPage');
-    pdfPage.classList.add('active');
-    loadPDFs(); // Load existing PDFs
-}
-
-function closePDFPage() {
-    const pdfPage = document.getElementById('pdfPage');
-    pdfPage.classList.remove('active');
-}
-
-// AI Assistant Controls
-function toggleAI() {
-    const aiContent = document.getElementById('aiContent');
-    aiContent.classList.toggle('active');
-}
-// PDF Upload Handling
-const uploadSection = document.querySelector('.upload-section');
-const pdfUpload = document.getElementById('pdfUpload');
-
-// Drag and Drop
-uploadSection.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadSection.classList.add('drag-over');
-});
-
-uploadSection.addEventListener('dragleave', () => {
-    uploadSection.classList.remove('drag-over');
-});
-
-uploadSection.addEventListener('drop', async (e) => {
-    e.preventDefault();
-    uploadSection.classList.remove('drag-over');
-    const files = e.dataTransfer.files;
-    handleFiles(files);
-});
-
-pdfUpload.addEventListener('change', (e) => {
-    handleFiles(e.target.files);
-});
-
-async function handleFiles(files) {
-    for (const file of files) {
-        if (file.type === 'application/pdf') {
-            try {
-                const storageRef = firebase.storage().ref();
-                const fileRef = storageRef.child(`pdfs/${auth.currentUser.uid}/${file.name}`);
-
-                // Upload file
-                const snapshot = await fileRef.put(file);
-                const url = await snapshot.ref.getDownloadURL();
-
-                // Save metadata to Firestore
-                await savePDFMetadata(file.name, url);
-
-                // Add to PDF list
-                createPDFCard(file.name, url);
-            } catch (error) {
-                console.error('Upload error:', error);
-            }
-        }
-    }
-}
-                                    // AI Feature Activation
-async function activateFeature(feature) {
-    switch(feature) {
-        case 'text':
-            initializeTextQuestions();
-            break;
-        case 'voice':
-            initializeVoiceInput();
-            break;
-        case 'image':
-            initializeImageAnalysis();
-            break;
-        case 'video':
-            initializeVideoAnalysis();
-            break;
-        case 'quiz':
-            initializeQuizGeneration();
-            break;
-    }
-}
-
-// Text Questions
-async function initializeTextQuestions() {
-    const question = await promptQuestion();
-    const answer = await getAnswerFromSources(question);
-    displayAnswer(answer);
-}
-
-// Voice Input
-function initializeVoiceInput() {
-    const recognition = new webkitSpeechRecognition();
-    recognition.continuous = false;
-    recognition.onresult = async (event) => {
-        const question = event.results[0][0].transcript;
-        const answer = await getAnswerFromSources(question);
-        displayAnswer(answer);
-    };
-    recognition.start();
-}
-
-// Image Analysis
-async function initializeImageAnalysis() {
-    const imageData = await getSelectedImage();
-    const analysis = await analyzeImage(imageData);
-    displayImageInsights(analysis);
-}
-
-// Video Analysis
-async function initializeVideoAnalysis() {
-    const videoUrl = await getVideoUrl();
-    const analysis = await analyzeVideo(videoUrl);
-    displayVideoInsights(analysis);
-}
-
-// Quiz Generation
-async function initializeQuizGeneration() {
-    const pdfContent = await extractPDFContent();
-    const quiz = await generateQuiz(pdfContent);
-    displayQuiz(quiz);
-}
-// Firebase Storage Management
-async function savePDFMetadata(filename, url) {
-    await db.collection('pdfs').add({
-        userId: auth.currentUser.uid,
-        filename: filename,
-        url: url,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        lastAccessed: firebase.firestore.FieldValue.serverTimestamp()
-    });
-}
-
-// Load PDFs
-async function loadPDFs() {
-    const pdfList = document.getElementById('pdfList');
-    pdfList.innerHTML = '';
-
-    const snapshot = await db.collection('pdfs')
-        .where('userId', '==', auth.currentUser.uid)
-        .orderBy('createdAt', 'desc')
-        .get();
-
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        createPDFCard(data.filename, data.url);
-    });
-}
-
-// Create PDF Card
-function createPDFCard(filename, url) {
-    const card = document.createElement('div');
-    card.className = 'pdf-card';
-    card.innerHTML = `
-        <i class="fas fa-file-pdf"></i>
-        <h4>${filename}</h4>
-        <div class="pdf-actions">
-            <button onclick="viewPDF('${url}')">View</button>
-            <button onclick="sharePDF('${url}')">Share</button>
-            <button onclick="deletePDF('${filename}')">Delete</button>
-        </div>
-    `;
-    document.getElementById('pdfList').appendChild(card);
-}
-// AI Answer Generation Service
-async function getAnswerFromSources(question) {
-    const sources = ['google', 'youtube', 'wikipedia'];
-    let combinedAnswer = '';
-
-    for (const source of sources) {
-        const response = await fetchFromSource(source, question);
-        combinedAnswer += `\n${source.toUpperCase()} RESPONSE:\n${response}`;
-    }
-
-    return combinedAnswer;
-}
-
-// Source-specific fetching
-async function fetchFromSource(source, query) {
-    const apiKeys = {
-        google: 'YOUR_GOOGLE_API_KEY',
-        youtube: 'YOUR_YOUTUBE_API_KEY'
-    };
-
-    switch(source) {
-        case 'google':
-            return await fetchGoogleResults(query, apiKeys.google);
-        case 'youtube':
-            return await fetchYoutubeResults(query, apiKeys.youtube);
-        case 'wikipedia':
-            return await fetchWikipediaResults(query);
-    }
-}
-// Quiz Generation System
-class QuizGenerator {
-    constructor(pdfContent) {
-        this.content = pdfContent;
-        this.questions = [];
-    }
-
-    async generateQuestions() {
-        // Generate multiple choice questions
-        const mcQuestions = await this.generateMultipleChoice();
-
-        // Generate essay questions
-        const essayQuestions = await this.generateEssayQuestions();
-
-        return [...mcQuestions, ...essayQuestions];
-    }
-
-    async generateMultipleChoice() {
-        // AI-powered multiple choice generation
-        const questions = [];
-        const keyPoints = await this.extractKeyPoints();
-
-        for (const point of keyPoints) {
-            questions.push({
-                type: 'multiple',
-                question: point.question,
-                options: point.options,
-                correct: point.correct,
-                explanation: point.explanation
-            });
-        }
-
-        return questions;
-    }
-
-    async generateEssayQuestions() {
-        // AI-powered essay question generation
-        const topics = await this.extractMainTopics();
-
-        return topics.map(topic => ({
-            type: 'essay',
-            question: `Explain in detail: ${topic}`,
-            rubric: this.generateRubric(topic),
-            sampleAnswer: this.generateSampleAnswer(topic)
-        }));
-    }
-}
-// Quiz Interface Management
-class QuizInterface {
-    constructor(quiz) {
-        this.quiz = quiz;
-        this.currentQuestion = 0;
-        this.score = 0;
-        this.answers = [];
-    }
-
-    displayQuestion() {
-        const question = this.quiz[this.currentQuestion];
-        const quizContainer = document.createElement('div');
-        quizContainer.className = 'quiz-container';
-
-        if (question.type === 'multiple') {
-            this.displayMultipleChoice(quizContainer, question);
-        } else {
-            this.displayEssayQuestion(quizContainer, question);
-        }
-
-        document.getElementById('pdfList').appendChild(quizContainer);
-    }
-
-    displayMultipleChoice(container, question) {
-        container.innerHTML = `
-            <h3>${question.question}</h3>
-            <div class="options">
-                ${question.options.map((option, index) => `
-                    <label>
-                        <input type="radio" name="q${this.currentQuestion}" value="${index}">
-                        ${option}
-                    </label>
-                `).join('')}
-            </div>
-            <button onclick="quizInterface.checkAnswer()">Submit Answer</button>
-        `;
-    }
-
-    displayEssayQuestion(container, question) {
-        container.innerHTML = `
-            <h3>${question.question}</h3>
-            <textarea class="essay-answer" rows="10"></textarea>
-            <button onclick="quizInterface.submitEssay()">Submit Essay</button>
-        `;
-    }
-
-    async checkAnswer() {
-        const selected = document.querySelector(`input[name="q${this.currentQuestion}"]:checked`);
-        if (selected) {
-            const answer = parseInt(selected.value);
-            const correct = this.quiz[this.currentQuestion].correct === answer;
-
-            if (correct) this.score++;
-
-            this.showFeedback(correct);
-            await this.nextQuestion();
-        }
-    }
-
-    async submitEssay() {
-        const essay = document.querySelector('.essay-answer').value;
-        const analysis = await this.analyzeEssay(essay);
-        this.showEssayFeedback(analysis);
-        await this.nextQuestion();
-    }
-}
-// Performance Tracking System
-class PerformanceTracker {
-    constructor(userId) {
-        this.userId = userId;
-        this.history = [];
-    }
-
-    async saveQuizResult(quizData) {
-        const result = {
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            score: quizData.score,
-            totalQuestions: quizData.total,
-            type: quizData.type,
-            answers: quizData.answers
-        };
-
-        await db.collection('quiz-results').add({
-            userId: this.userId,
-            ...result
-        });
-
-        this.history.push(result);
-    }
-
-    async getPerformanceStats() {
-        const snapshot = await db.collection('quiz-results')
-            .where('userId', '==', this.userId)
-            .orderBy('timestamp', 'desc')
-            .get();
-
-        return this.calculateStats(snapshot.docs.map(doc => doc.data()));
-    }
-
-    calculateStats(results) {
-        return {
-            totalQuizzes: results.length,
-            averageScore: results.reduce((acc, curr) => acc + (curr.score / curr.totalQuestions), 0) / results.length,
-            improvement: this.calculateImprovement(results),
-            weakAreas: this.identifyWeakAreas(results)
-        };
-    }
-}
+ 
+            
+            
+            
+            
 // Navigation Controls
 document.addEventListener('DOMContentLoaded', () => {
     const profileButton = document.querySelector('details');
@@ -2453,8 +2339,7 @@ function createBookCard(notebook, id) {
 
     const firstRow = bookshelf.querySelector('.book-row');
     firstRow.appendChild(bookCard);
-}
- // Book Card Click Handler
+}// Book Card Click Handler
 document.addEventListener('click', async (e) => {
     const bookCard = e.target.closest('.book-link');
     if (!bookCard) return;
@@ -2494,142 +2379,7 @@ async function loadNotebookData(notebookId) {
     return { id: doc.id, ...doc.data() };
 }
 
-// Initialize PDF Format
-function initializePDFFormat(notebook) {
-    const pdfFormat = document.getElementById('pdf-format');
-    const pageCount = notebook.pageCount;
-    let currentPage = 1;
-
-    // Set up navigation
-    const prevButton = pdfFormat.querySelector('button:first-of-type');
-    const nextButton = pdfFormat.querySelector('button:last-of-type');
-    const pageSpan = pdfFormat.querySelector('span');
-
-    function updatePageDisplay() {
-        pageSpan.textContent = `Page ${currentPage} of ${pageCount}`;
-    }
-
-    prevButton.onclick = () => {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePageDisplay();
-            loadPageContent(notebook.id, currentPage);
-        }
-    };
-
-    nextButton.onclick = () => {
-        if (currentPage < pageCount) {
-            currentPage++;
-            updatePageDisplay();
-            loadPageContent(notebook.id, currentPage);
-        }
-    };
-
-    updatePageDisplay();
-    loadPageContent(notebook.id, currentPage);
-}
-
-// Initialize Nigerian Format
-function initializeNigerianFormat(notebook) {
-    const nigerianFormat = document.getElementById('nigerian-format');
-    const pageCount = notebook.pageCount;
-    let currentPage = 1;
-
-    // Set up navigation
-    const prevButton = nigerianFormat.querySelector('button:first-of-type');
-    const nextButton = nigerianFormat.querySelector('button:last-of-type');
-    const pageSpan = nigerianFormat.querySelector('span');
-
-    function updatePageDisplay() {
-        pageSpan.textContent = `Page ${currentPage} of ${pageCount}`;
-    }
-
-    prevButton.onclick = () => {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePageDisplay();
-            loadPageContent(notebook.id, currentPage);
-        }
-    };
-
-    nextButton.onclick = () => {
-        if (currentPage < pageCount) {
-            currentPage++;
-            updatePageDisplay();
-            loadPageContent(notebook.id, currentPage);
-        }
-    };
-
-    updatePageDisplay();
-    loadPageContent(notebook.id, currentPage);
-}
-
-// Load page content from Firestore
-async function loadPageContent(notebookId, pageNumber) {
-    const pageDoc = await db.collection('notebooks')
-        .doc(notebookId)
-        .collection('pages')
-        .doc(pageNumber.toString())
-        .get();
-
-    if (pageDoc.exists) {
-        const pageData = pageDoc.data();
-        const textarea = document.querySelector('.notebook-text');
-        textarea.value = pageData.content || '';
-    }
-}
-
-// Initialize autosave functionality
-function initializeAutosave(notebookId) {
-    const autosaveCheckbox = document.querySelector('.book-menu input[type="checkbox"]');
-    const textarea = document.querySelector('.notebook-text');
-    let autosaveInterval;
-
-    autosaveCheckbox.onchange = () => {
-        if (autosaveCheckbox.checked) {
-            autosaveInterval = setInterval(() => saveContent(notebookId), 30000); // Autosave every 30 seconds
-        } else {
-            clearInterval(autosaveInterval);
-        }
-    };
-
-    // Manual save on input
-    textarea.oninput = debounce(() => {
-        if (autosaveCheckbox.checked) {
-            saveContent(notebookId);
-        }
-    }, 1000);
-}
-
-// Save content to Firestore
-async function saveContent(notebookId) {
-    const textarea = document.querySelector('.notebook-text');
-    const pageSpan = document.querySelector('.page-navigation span');
-    const currentPage = parseInt(pageSpan.textContent.split(' ')[1]);
-
-    await db.collection('notebooks')
-        .doc(notebookId)
-        .collection('pages')
-        .doc(currentPage.toString())
-        .set({
-            content: textarea.value,
-            lastModified: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-}
-
-// Debounce helper function
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
- // Format-specific editor initialization
+// Format-specific editor initialization
 function initializePDFFormat(notebook) {
     const pdfFormat = document.getElementById('pdf-format');
     const editorDropdown = document.querySelector('.editor-dropdown');
@@ -2744,6 +2494,58 @@ function initializeNigerianFormat(notebook) {
     loadPageContent(notebook.id, currentPage);
 }
 
+// Load page content from Firestore
+async function loadPageContent(notebookId, pageNumber) {
+    const pageDoc = await db.collection('notebooks')
+        .doc(notebookId)
+        .collection('pages')
+        .doc(pageNumber.toString())
+        .get();
+
+    if (pageDoc.exists) {
+        const pageData = pageDoc.data();
+        const textarea = document.querySelector('.notebook-text');
+        textarea.value = pageData.content || '';
+    }
+}
+
+// Initialize autosave functionality
+function initializeAutosave(notebookId) {
+    const autosaveCheckbox = document.querySelector('.book-menu input[type="checkbox"]');
+    const textarea = document.querySelector('.notebook-text');
+    let autosaveInterval;
+
+    autosaveCheckbox.onchange = () => {
+        if (autosaveCheckbox.checked) {
+            autosaveInterval = setInterval(() => saveContent(notebookId), 30000);
+        } else {
+            clearInterval(autosaveInterval);
+        }
+    };
+
+    textarea.oninput = debounce(() => {
+        if (autosaveCheckbox.checked) {
+            saveContent(notebookId);
+        }
+    }, 1000);
+}
+
+// Save content to Firestore
+async function saveContent(notebookId) {
+    const textarea = document.querySelector('.notebook-text');
+    const pageSpan = document.querySelector('.page-navigation span');
+    const currentPage = parseInt(pageSpan.textContent.split(' ')[1]);
+
+    await db.collection('notebooks')
+        .doc(notebookId)
+        .collection('pages')
+        .doc(currentPage.toString())
+        .set({
+            content: textarea.value,
+            lastModified: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+}
+
 // Editor Tools Implementation
 function initializeEditorTools() {
     const tools = document.querySelectorAll('.tool-cell');
@@ -2851,6 +2653,368 @@ async function handleImageUpload(event, target) {
     }
 }
 
+// Debounce helper function
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+// Back button handlers
+document.getElementById('back-to-books').addEventListener('click', () => {
+    // Hide book content and show books page
+    document.getElementById('book-content').style.display = 'none';
+    document.getElementById('books-page').style.display = 'block';
+    
+    // Clear any active editor state
+    const editorDropdown = document.querySelector('.editor-dropdown');
+    if (editorDropdown) {
+        editorDropdown.style.display = 'none';
+    }
+    
+    // Reset formats display
+    const pdfFormat = document.getElementById('pdf-format');
+    const nigerianFormat = document.getElementById('nigerian-format');
+    if (pdfFormat) pdfFormat.style.display = 'none';
+    if (nigerianFormat) nigerianFormat.style.display = 'none';
+    
+    // Clear any autosave intervals
+    const autosaveCheckbox = document.querySelector('.book-menu input[type="checkbox"]');
+    if (autosaveCheckbox) {
+        autosaveCheckbox.checked = false;
+        autosaveCheckbox.dispatchEvent(new Event('change'));
+    }
+});
+
+document.getElementById('back-to-main').addEventListener('click', () => {
+    // Hide books page content
+    document.getElementById('booksContent').style.display = 'none';
+    
+    // Reset any active states in the books section
+    document.getElementById('books-page').style.display = 'block';
+    document.getElementById('book-content').style.display = 'none';
+    
+    // Clear search input
+    const searchInput = document.querySelector('.search-section input');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+});
+
+// Global Stats Tracking System
+function initializeGlobalStats() {
+    const statsTable = document.querySelector('article table');
+    const [booksCell, usersCell, feedbackCell] = statsTable.querySelectorAll('td');
+
+    // Track Total Books Across All Users
+    db.collection('notebooks')
+        .where('createdAt', '!=', null) // Count all valid notebooks
+        .onSnapshot(snapshot => {
+            const totalBooks = snapshot.size;
+            booksCell.textContent = totalBooks;
+            // Add animation for number changes
+            booksCell.classList.add('number-change');
+            setTimeout(() => booksCell.classList.remove('number-change'), 500);
+        });
+
+    // Track Total Registered Users
+    db.collection('users')
+        .onSnapshot(snapshot => {
+            const totalUsers = snapshot.size;
+            usersCell.textContent = totalUsers;
+            usersCell.classList.add('number-change');
+            setTimeout(() => usersCell.classList.remove('number-change'), 500);
+        });
+
+    // Track Total User Feedback
+    db.collection('feedback')
+        .onSnapshot(snapshot => {
+            const totalFeedback = snapshot.size;
+            feedbackCell.textContent = totalFeedback;
+            feedbackCell.classList.add('number-change');
+            setTimeout(() => feedbackCell.classList.remove('number-change'), 500);
+        });
+}
+
+// Add this CSS for number change animation
+const style = document.createElement('style');
+style.textContent = `
+    .number-change {
+        animation: numberPulse 0.5s ease-out;
+    }
+    
+    @keyframes numberPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+`;
+document.head.appendChild(style);
+
+// Initialize stats when app loads
+document.addEventListener('DOMContentLoaded', initializeGlobalStats);
+// Feedback System Implementation
+class FeedbackSystem {
+    constructor() {
+        this.modal = document.getElementById('feedbackModal');
+        this.form = document.getElementById('feedbackForm');
+        this.trigger = document.getElementById('feedbackBtn');
+        this.stars = document.querySelectorAll('.stars i');
+        this.currentRating = 0;
+        
+        this.initializeEventListeners();
+    }
+
+    initializeEventListeners() {
+        // Open modal
+        this.trigger.addEventListener('click', () => this.openModal());
+
+        // Close modal
+        document.querySelector('.close-btn').addEventListener('click', () => this.closeModal());
+
+        // Star rating
+        this.stars.forEach(star => {
+            star.addEventListener('mouseover', () => this.highlightStars(star.dataset.rating));
+            star.addEventListener('mouseleave', () => this.highlightStars(this.currentRating));
+            star.addEventListener('click', () => this.setRating(star.dataset.rating));
+        });
+
+        // Form submission
+        this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+    }
+
+    openModal() {
+        this.modal.style.display = 'block';
+    }
+
+    closeModal() {
+        this.modal.style.display = 'none';
+        this.resetForm();
+    }
+
+    highlightStars(rating) {
+        this.stars.forEach(star => {
+            star.classList.toggle('active', star.dataset.rating <= rating);
+        });
+    }
+
+    setRating(rating) {
+        this.currentRating = rating;
+        this.highlightStars(rating);
+    }
+
+    resetForm() {
+        this.form.reset();
+        this.currentRating = 0;
+        this.highlightStars(0);
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+
+        if (!auth.currentUser) {
+            alert('Please login to submit feedback');
+            return;
+        }
+
+        const feedbackData = {
+            userId: auth.currentUser.uid,
+            userEmail: auth.currentUser.email,
+            rating: this.currentRating,
+            type: this.form.querySelector('select').value,
+            message: this.form.querySelector('textarea').value,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        try {
+            await db.collection('feedback').add(feedbackData);
+            this.showSuccessMessage();
+            this.closeModal();
+        } catch (error) {
+            this.showErrorMessage(error);
+        }
+    }
+
+    showSuccessMessage() {
+        const notification = document.createElement('div');
+        notification.className = 'feedback-notification success';
+        notification.textContent = 'Thank you for your feedback!';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => notification.remove(), 3000);
+    }
+
+    showErrorMessage(error) {
+        const notification = document.createElement('div');
+        notification.className = 'feedback-notification error';
+        notification.textContent = `Error: ${error.message}`;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => notification.remove(), 3000);
+    }
+}
+
+// Initialize feedback system
+document.addEventListener('DOMContentLoaded', () => {
+    const feedbackSystem = new FeedbackSystem();
+});
+
+class PDFManager {
+    constructor() {
+        this.pdfList = document.getElementById('pdfList');
+        this.uploadBtn = document.getElementById('uploadPdfBtn');
+        this.setupEventListeners();
+        this.loadPDFs();
+    }
+
+    setupEventListeners() {
+        this.uploadBtn.addEventListener('click', () => this.initiateUpload());
+    }
+
+    initiateUpload() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.pdf';
+        input.onchange = (e) => this.handleFileSelection(e);
+        input.click();
+    }
+
+    async handleFileSelection(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const fileName = prompt('Enter a name for your PDF:', file.name.replace('.pdf', ''));
+        if (!fileName) return;
+
+        await this.uploadPDF(file, fileName);
+    }
+
+    async uploadPDF(file, customName) {
+        const loadingOverlay = this.showLoading();
+
+        try {
+            const storageRef = firebase.storage().ref();
+            const fileRef = storageRef.child(`pdfs/${auth.currentUser.uid}/${Date.now()}_${file.name}`);
+            
+            await fileRef.put(file);
+            const downloadURL = await fileRef.getDownloadURL();
+
+            await db.collection('pdfs').add({
+                userId: auth.currentUser.uid,
+                name: customName,
+                originalName: file.name,
+                url: downloadURL,
+                uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            this.showNotification('PDF uploaded successfully!', 'success');
+            this.loadPDFs();
+        } catch (error) {
+            this.showNotification(error.message, 'error');
+        } finally {
+            loadingOverlay.remove();
+        }
+    }
+
+    async loadPDFs() {
+        try {
+            const snapshot = await db.collection('pdfs')
+                .where('userId', '==', auth.currentUser.uid)
+                .orderBy('uploadedAt', 'desc')
+                .get();
+
+            this.pdfList.innerHTML = '';
+            snapshot.forEach(doc => {
+                this.createPDFCard(doc.data(), doc.id);
+            });
+        } catch (error) {
+            this.showNotification(error.message, 'error');
+        }
+    }
+
+    createPDFCard(pdfData, pdfId) {
+        const card = document.createElement('div');
+        card.className = 'pdf-card';
+        card.innerHTML = `
+            <div class="pdf-info">
+                <div class="pdf-name">${pdfData.name}</div>
+                <div class="pdf-date">${this.formatDate(pdfData.uploadedAt)}</div>
+            </div>
+            <div class="pdf-actions">
+                <button class="pdf-action-btn view-btn" onclick="window.open('${pdfData.url}', '_blank')">
+                    <i class="fas fa-eye"></i> View
+                </button>
+                <button class="pdf-action-btn download-btn" onclick="window.pdfManager.downloadPDF('${pdfData.url}', '${pdfData.name}')">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button class="pdf-action-btn delete-btn" onclick="window.pdfManager.deletePDF('${pdfId}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
+        this.pdfList.appendChild(card);
+    }
+
+    async deletePDF(pdfId) {
+        if (!confirm('Are you sure you want to delete this PDF?')) return;
+
+        try {
+            await db.collection('pdfs').doc(pdfId).delete();
+            this.showNotification('PDF deleted successfully!', 'success');
+            this.loadPDFs();
+        } catch (error) {
+            this.showNotification(error.message, 'error');
+        }
+    }
+
+    downloadPDF(url, filename) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    formatDate(timestamp) {
+        if (!timestamp) return 'Date unavailable';
+        return new Date(timestamp.seconds * 1000).toLocaleDateString();
+    }
+
+    showLoading() {
+        const overlay = document.createElement('div');
+        overlay.className = 'loading-overlay';
+        overlay.innerHTML = `
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                Uploading PDF...
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        return overlay;
+    }
+
+    showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
+}
+
+// Initialize PDF manager when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    window.pdfManager = new PDFManager();
+});
+
+
+
 // Notification System
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
@@ -2872,6 +3036,6 @@ function initializeUI() {
 }
 
 
-    </script>
+    </script>    
 </body>
 </html>
