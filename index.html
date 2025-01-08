@@ -1188,151 +1188,10 @@ details select {
     }
 }
 
-.pdf-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
 
-.pdf-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
+  
 
-.upload-btn {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
 
-.upload-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.pdf-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.pdf-card {
-    background: white;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-}
-
-.pdf-card:hover {
-    transform: translateY(-3px);
-}
-
-.pdf-info {
-    margin-bottom: 15px;
-}
-
-.pdf-name {
-    font-weight: bold;
-    margin-bottom: 5px;
-    word-break: break-word;
-}
-
-.pdf-date {
-    color: #666;
-    font-size: 0.9em;
-}
-
-.pdf-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.pdf-action-btn {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.view-btn {
-    background: #007bff;
-    color: white;
-}
-
-.download-btn {
-    background: #28a745;
-    color: white;
-}
-
-.delete-btn {
-    background: #dc3545;
-    color: white;
-}
-
-.loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.loading-spinner {
-    background: white;
-    padding: 20px 40px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 8px;
-    color: white;
-    z-index: 1000;
-    animation: slideIn 0.3s ease-out;
-}
-
-.success {
-    background: #4CAF50;
-}
-
-.error {
-    background: #f44336;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
   .writing-area {
     width: 100%;
@@ -1417,6 +1276,179 @@ details select {
     display: none !important;
 }
 }
+.pdf-management {
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-btn:hover {
+    background: #45a049;
+}
+
+.pdf-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.search-box i {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+#pdfSort {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+}
+
+.pdf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.pdf-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pdf-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.pdf-info {
+    margin-bottom: 1rem;
+}
+
+.pdf-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.pdf-date {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.pdf-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.pdf-action-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.view-btn {
+    background: #007bff;
+    color: white;
+}
+
+.download-btn {
+    background: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    padding: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#pdfPreview {
+    width: 100%;
+    height: auto;
+}
+
   /* Responsive Breakpoints */
 @media (max-width: 1200px) {
     .main-app {
@@ -1671,9 +1703,7 @@ details select {
     <button id="editor-button" draggable="true">
         <i class="fas fa-edit"></i> Editor
     </button>
-    <!-- Add contenteditable attribute for better text editing -->
-<div class="writing-area" contenteditable="true">
-
+    
     <div class="editor-tools-dropdown" id="editorTools">
         <table class="tools-table">
             <tr>
@@ -1721,7 +1751,7 @@ details select {
         </table>
     </div>
 </div>
-</div>
+
 
             <!-- PDF Format Content -->
 
@@ -1825,6 +1855,47 @@ details select {
     </div>
 </div>
 
+<!-- PDF Management Section -->
+<div class="pdf-management">
+    <div class="pdf-header">
+        <h2>PDF Library</h2>
+        <button id="uploadPdfBtn" class="upload-btn">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Upload PDF
+        </button>
+    </div>
+
+    <div class="pdf-filters">
+        <div class="search-box">
+            <input type="text" id="pdfSearch" placeholder="Search PDFs...">
+            <i class="fas fa-search"></i>
+        </div>
+        <select id="pdfSort">
+            <option value="date-new">Newest First</option>
+            <option value="date-old">Oldest First</option>
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+        </select>
+    </div>
+
+    <div class="pdf-grid" id="pdfList">
+        <!-- PDFs will be dynamically inserted here -->
+    </div>
+
+    <!-- PDF Preview Modal -->
+    <div id="pdfPreviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="previewFileName">PDF Preview</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <canvas id="pdfPreview"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
             
           <!-- Add this to your HTML where you want the feedback button to appear -->
 <button id="feedbackBtn" class="feedback-trigger">
@@ -1862,27 +1933,7 @@ details select {
     </div>
 </div>
 
- <!-- Add this to your HTML where you want the PDF upload feature -->
-<div class="pdf-upload-section">
-    <button id="uploadPdfBtn" class="upload-trigger">
-    <i class="fas fa-file-pdf"></i> My Pdf
-    </button>
-    
-    <!-- Add this section where you want the PDF features to appear -->
-<div class="pdf-container">
-    <div class="pdf-header">
-        <h2>My PDF Library</h2>
-        <button id="uploadPdfBtn" class="upload-btn">
-            <i class="fas fa-plus"></i> Upload New PDF
-        </button>
-    </div>
-    
-    <div class="pdf-list" id="pdfList">
-        <!-- PDFs will be listed here -->
-    </div>
-</div>
 
- 
         <!-- Main Ad Banner -->
         <section>
             <marquee scrolldelay="15000" width="500" height="70">
@@ -1988,9 +2039,9 @@ details select {
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <!-- Add PDF.js library for better PDF handling -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-     <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+
+    <script>
     // Initialize Firebase with your config
 const firebaseConfig = {
     apiKey: "AIzaSyAK8T_ceUGR1B0ovxFLxPYs6HWQYewittw",
@@ -2828,131 +2879,147 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedbackSystem = new FeedbackSystem();
 });
 
-
 class PDFManager {
     constructor() {
         this.pdfList = document.getElementById('pdfList');
         this.uploadBtn = document.getElementById('uploadPdfBtn');
+        this.searchInput = document.getElementById('pdfSearch');
+        this.sortSelect = document.getElementById('pdfSort');
+        this.modal = document.getElementById('pdfPreviewModal');
         this.storage = firebase.storage();
-        this.setupEventListeners();
+        this.pdfs = [];
+        
+        this.initializeEventListeners();
         this.loadPDFs();
     }
 
-    setupEventListeners() {
+    initializeEventListeners() {
         this.uploadBtn.addEventListener('click', () => this.initiateUpload());
-    }
-
-    initiateUpload() {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.pdf';
-        input.multiple = true; // Allow multiple file selection
-        input.onchange = (e) => this.handleFileSelection(e);
-        input.click();
-    }
-
-    async handleFileSelection(e) {
-        const files = Array.from(e.target.files);
-        if (files.length === 0) return;
-
-        const uploadPromises = files.map(async (file) => {
-            const fileName = prompt('Enter a name for your PDF:', file.name.replace('.pdf', ''));
-            if (!fileName) return;
-
-            await this.uploadPDF(file, fileName);
+        this.searchInput.addEventListener('input', debounce(() => this.filterPDFs(), 300));
+        this.sortSelect.addEventListener('change', () => this.sortPDFs());
+        
+        // Modal close button
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            this.modal.style.display = 'none';
         });
-
-        await Promise.all(uploadPromises);
-    }
-
-    async uploadPDF(file, customName) {
-        const loadingOverlay = this.showLoading();
-
-        try {
-            // Create a unique file path
-            const filePath = `pdfs/${auth.currentUser.uid}/${Date.now()}_${file.name}`;
-            const fileRef = this.storage.ref().child(filePath);
-            
-            // Upload file with metadata
-            const metadata = {
-                contentType: 'application/pdf',
-                customMetadata: {
-                    'originalName': file.name,
-                    'uploadedBy': auth.currentUser.uid
-                }
-            };
-
-            // Upload the file
-            const uploadTask = await fileRef.put(file, metadata);
-            const downloadURL = await uploadTask.ref.getDownloadURL();
-
-            // Save PDF information to Firestore
-            await db.collection('pdfs').add({
-                userId: auth.currentUser.uid,
-                name: customName,
-                originalName: file.name,
-                url: downloadURL,
-                filePath: filePath,
-                size: file.size,
-                uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-
-            this.showNotification('PDF uploaded successfully!', 'success');
-            await this.loadPDFs();
-        } catch (error) {
-            console.error('Upload error:', error);
-            this.showNotification(`Upload failed: ${error.message}`, 'error');
-        } finally {
-            loadingOverlay.remove();
-        }
     }
 
     async loadPDFs() {
         try {
             const snapshot = await db.collection('pdfs')
                 .where('userId', '==', auth.currentUser.uid)
-                .orderBy('uploadedAt', 'desc')
                 .get();
 
-            this.pdfList.innerHTML = '';
-            
-            if (snapshot.empty) {
-                this.pdfList.innerHTML = '<div class="no-pdfs">No PDFs uploaded yet</div>';
-                return;
-            }
+            this.pdfs = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
 
-            snapshot.forEach(doc => {
-                this.createPDFCard(doc.data(), doc.id);
-            });
+            this.renderPDFs();
         } catch (error) {
-            console.error('Load PDFs error:', error);
             this.showNotification('Failed to load PDFs', 'error');
         }
     }
 
-    async deletePDF(pdfId) {
-        if (!confirm('Are you sure you want to delete this PDF?')) return;
+    renderPDFs() {
+        this.pdfList.innerHTML = this.pdfs.length === 0 
+            ? '<div class="no-pdfs">No PDFs uploaded yet</div>'
+            : this.pdfs.map(pdf => this.createPDFCard(pdf)).join('');
+    }
+
+    createPDFCard(pdf) {
+        return `
+            <div class="pdf-card" data-id="${pdf.id}">
+                <div class="pdf-info">
+                    <div class="pdf-name">${pdf.name}</div>
+                    <div class="pdf-date">${this.formatDate(pdf.uploadedAt)}</div>
+                </div>
+                <div class="pdf-actions">
+                    <button class="pdf-action-btn view-btn" onclick="pdfManager.previewPDF('${pdf.url}', '${pdf.name}')">
+                        <i class="fas fa-eye"></i> View
+                    </button>
+                    <button class="pdf-action-btn download-btn" onclick="pdfManager.downloadPDF('${pdf.url}', '${pdf.name}')">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="pdf-action-btn delete-btn" onclick="pdfManager.deletePDF('${pdf.id}')">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    async previewPDF(url, name) {
+        this.modal.style.display = 'block';
+        document.getElementById('previewFileName').textContent = name;
+
+        const canvas = document.getElementById('pdfPreview');
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
         try {
-            // Get the PDF document
-            const pdfDoc = await db.collection('pdfs').doc(pdfId).get();
-            const pdfData = pdfDoc.data();
+            const pdf = await pdfjsLib.getDocument(url).promise;
+            const page = await pdf.getPage(1);
+            const viewport = page.getViewport({ scale: 1.5 });
 
-            // Delete from Storage
-            const fileRef = this.storage.ref().child(pdfData.filePath);
-            await fileRef.delete();
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-            // Delete from Firestore
-            await db.collection('pdfs').doc(pdfId).delete();
-
-            this.showNotification('PDF deleted successfully!', 'success');
-            await this.loadPDFs();
+            await page.render({
+                canvasContext: canvas.getContext('2d'),
+                viewport: viewport
+            }).promise;
         } catch (error) {
-            console.error('Delete error:', error);
-            this.showNotification('Failed to delete PDF', 'error');
+            this.showNotification('Failed to load PDF preview', 'error');
         }
     }
+
+    filterPDFs() {
+        const searchTerm = this.searchInput.value.toLowerCase();
+        const filteredPDFs = this.pdfs.filter(pdf => 
+            pdf.name.toLowerCase().includes(searchTerm)
+        );
+        
+        this.pdfList.innerHTML = filteredPDFs.map(pdf => 
+            this.createPDFCard(pdf)
+        ).join('');
+    }
+
+    sortPDFs() {
+        const sortValue = this.sortSelect.value;
+        
+        this.pdfs.sort((a, b) => {
+            switch(sortValue) {
+                case 'date-new':
+                    return b.uploadedAt.seconds - a.uploadedAt.seconds;
+                case 'date-old':
+                    return a.uploadedAt.seconds - b.uploadedAt.seconds;
+                case 'name-asc':
+                    return a.name.localeCompare(b.name);
+                case 'name-desc':
+                    return b.name.localeCompare(a.name);
+                default:
+                    return 0;
+            }
+        });
+
+        this.renderPDFs();
+    }
+
+    formatDate(timestamp) {
+        return new Date(timestamp.seconds * 1000).toLocaleDateString();
+    }
+
+    showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
 }
+
+// Initialize PDF manager
+const pdfManager = new PDFManager();
 
 
 
