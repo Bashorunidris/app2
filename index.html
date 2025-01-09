@@ -18,6 +18,9 @@
     --border-color: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+    --mobile-padding: 15px;
+    --tablet-padding: 20px;
+    --desktop-padding: 30px;
 }
 
 /* Global Styles */
@@ -1189,8 +1192,6 @@ details select {
 }
 
 
-  
-
 
 
   .writing-area {
@@ -1276,179 +1277,6 @@ details select {
     display: none !important;
 }
 }
-.pdf-management {
-    padding: 2rem;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.pdf-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.upload-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.upload-btn:hover {
-    background: #45a049;
-}
-
-.pdf-filters {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.search-box {
-    position: relative;
-    flex: 1;
-}
-
-.search-box input {
-    width: 100%;
-    padding: 12px 40px 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-}
-
-.search-box i {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #666;
-}
-
-#pdfSort {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    background: white;
-}
-
-.pdf-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-}
-
-.pdf-card {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.pdf-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.pdf-info {
-    margin-bottom: 1rem;
-}
-
-.pdf-name {
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.pdf-date {
-    font-size: 0.875rem;
-    color: #666;
-}
-
-.pdf-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.pdf-action-btn {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.view-btn {
-    background: #007bff;
-    color: white;
-}
-
-.download-btn {
-    background: #28a745;
-    color: white;
-}
-
-.delete-btn {
-    background: #dc3545;
-    color: white;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-}
-
-.modal-content {
-    position: relative;
-    width: 90%;
-    max-width: 800px;
-    margin: 2rem auto;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
-}
-
-.close-modal {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.modal-body {
-    padding: 1rem;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-#pdfPreview {
-    width: 100%;
-    height: auto;
-}
-
   /* Responsive Breakpoints */
 @media (max-width: 1200px) {
     .main-app {
@@ -1483,6 +1311,169 @@ details select {
     header {
         flex-direction: column;
         gap: 10px;
+    }
+}
+
+
+/* Extra Small Devices (Phones, 320px and up) */
+@media only screen and (min-width: 320px) {
+    .main-app {
+        padding: var(--mobile-padding);
+    }
+
+    .grid-layout {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .header {
+        padding: 10px;
+    }
+}
+
+/* Small Devices (Large Phones, 480px and up) */
+@media only screen and (min-width: 480px) {
+    .grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+
+/* Medium Devices (Tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .main-app {
+        padding: var(--tablet-padding);
+    }
+
+    .grid-layout {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .header {
+        padding: 15px 20px;
+    }
+}
+
+/* Large Devices (Laptops/Desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .main-app {
+        padding: var(--desktop-padding);
+    }
+
+    .grid-layout {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+    }
+}
+
+/* Extra Large Devices (Large Laptops and Desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .grid-layout {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 30px;
+    }
+}
+
+/* Device-Specific Optimizations */
+
+/* iPads and Tablets */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .pdf-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* Portrait Phones */
+@media only screen and (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .button-group {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+/* Landscape Phones */
+@media only screen and (max-width: 767px) and (orientation: landscape) {
+    .modal-content {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .button:hover {
+        transform: none;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+}
+
+/* High-DPI Screen Optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .image {
+        background-size: contain;
+    }
+}
+
+/* Print Media */
+@media print {
+    .no-print {
+        display: none;
+    }
+
+    .page-break {
+        page-break-before: always;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #121212;
+        --text-color: #ffffff;
+    }
+}
+
+/* Foldable Device Support */
+@media (spanning: single-fold-vertical) {
+    .content {
+        flex-direction: row;
+    }
+}
+
+/* CSS Grid Fallbacks */
+@supports not (display: grid) {
+    .grid-layout {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .grid-item {
+        flex: 1 1 300px;
+        margin: 10px;
     }
 }
 
@@ -1678,6 +1669,277 @@ details select {
                 <div class="book-row">
                     <!-- Additional book cards can be added here -->
                 </div>
+                <div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div><div class="book-row">
+                    
+                </div>
             </div>
         </section>
 
@@ -1855,46 +2117,6 @@ details select {
     </div>
 </div>
 
-<!-- PDF Management Section -->
-<div class="pdf-management">
-    <div class="pdf-header">
-        <h2>PDF Library</h2>
-        <button id="uploadPdfBtn" class="upload-btn">
-            <i class="fas fa-cloud-upload-alt"></i>
-            Upload PDF
-        </button>
-    </div>
-
-    <div class="pdf-filters">
-        <div class="search-box">
-            <input type="text" id="pdfSearch" placeholder="Search PDFs...">
-            <i class="fas fa-search"></i>
-        </div>
-        <select id="pdfSort">
-            <option value="date-new">Newest First</option>
-            <option value="date-old">Oldest First</option>
-            <option value="name-asc">Name A-Z</option>
-            <option value="name-desc">Name Z-A</option>
-        </select>
-    </div>
-
-    <div class="pdf-grid" id="pdfList">
-        <!-- PDFs will be dynamically inserted here -->
-    </div>
-
-    <!-- PDF Preview Modal -->
-    <div id="pdfPreviewModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="previewFileName">PDF Preview</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <canvas id="pdfPreview"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
 
             
           <!-- Add this to your HTML where you want the feedback button to appear -->
@@ -2878,148 +3100,6 @@ class FeedbackSystem {
 document.addEventListener('DOMContentLoaded', () => {
     const feedbackSystem = new FeedbackSystem();
 });
-
-class PDFManager {
-    constructor() {
-        this.pdfList = document.getElementById('pdfList');
-        this.uploadBtn = document.getElementById('uploadPdfBtn');
-        this.searchInput = document.getElementById('pdfSearch');
-        this.sortSelect = document.getElementById('pdfSort');
-        this.modal = document.getElementById('pdfPreviewModal');
-        this.storage = firebase.storage();
-        this.pdfs = [];
-        
-        this.initializeEventListeners();
-        this.loadPDFs();
-    }
-
-    initializeEventListeners() {
-        this.uploadBtn.addEventListener('click', () => this.initiateUpload());
-        this.searchInput.addEventListener('input', debounce(() => this.filterPDFs(), 300));
-        this.sortSelect.addEventListener('change', () => this.sortPDFs());
-        
-        // Modal close button
-        document.querySelector('.close-modal').addEventListener('click', () => {
-            this.modal.style.display = 'none';
-        });
-    }
-
-    async loadPDFs() {
-        try {
-            const snapshot = await db.collection('pdfs')
-                .where('userId', '==', auth.currentUser.uid)
-                .get();
-
-            this.pdfs = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-
-            this.renderPDFs();
-        } catch (error) {
-            this.showNotification('Failed to load PDFs', 'error');
-        }
-    }
-
-    renderPDFs() {
-        this.pdfList.innerHTML = this.pdfs.length === 0 
-            ? '<div class="no-pdfs">No PDFs uploaded yet</div>'
-            : this.pdfs.map(pdf => this.createPDFCard(pdf)).join('');
-    }
-
-    createPDFCard(pdf) {
-        return `
-            <div class="pdf-card" data-id="${pdf.id}">
-                <div class="pdf-info">
-                    <div class="pdf-name">${pdf.name}</div>
-                    <div class="pdf-date">${this.formatDate(pdf.uploadedAt)}</div>
-                </div>
-                <div class="pdf-actions">
-                    <button class="pdf-action-btn view-btn" onclick="pdfManager.previewPDF('${pdf.url}', '${pdf.name}')">
-                        <i class="fas fa-eye"></i> View
-                    </button>
-                    <button class="pdf-action-btn download-btn" onclick="pdfManager.downloadPDF('${pdf.url}', '${pdf.name}')">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="pdf-action-btn delete-btn" onclick="pdfManager.deletePDF('${pdf.id}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
-    async previewPDF(url, name) {
-        this.modal.style.display = 'block';
-        document.getElementById('previewFileName').textContent = name;
-
-        const canvas = document.getElementById('pdfPreview');
-        const pdfjsLib = window['pdfjs-dist/build/pdf'];
-
-        try {
-            const pdf = await pdfjsLib.getDocument(url).promise;
-            const page = await pdf.getPage(1);
-            const viewport = page.getViewport({ scale: 1.5 });
-
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            await page.render({
-                canvasContext: canvas.getContext('2d'),
-                viewport: viewport
-            }).promise;
-        } catch (error) {
-            this.showNotification('Failed to load PDF preview', 'error');
-        }
-    }
-
-    filterPDFs() {
-        const searchTerm = this.searchInput.value.toLowerCase();
-        const filteredPDFs = this.pdfs.filter(pdf => 
-            pdf.name.toLowerCase().includes(searchTerm)
-        );
-        
-        this.pdfList.innerHTML = filteredPDFs.map(pdf => 
-            this.createPDFCard(pdf)
-        ).join('');
-    }
-
-    sortPDFs() {
-        const sortValue = this.sortSelect.value;
-        
-        this.pdfs.sort((a, b) => {
-            switch(sortValue) {
-                case 'date-new':
-                    return b.uploadedAt.seconds - a.uploadedAt.seconds;
-                case 'date-old':
-                    return a.uploadedAt.seconds - b.uploadedAt.seconds;
-                case 'name-asc':
-                    return a.name.localeCompare(b.name);
-                case 'name-desc':
-                    return b.name.localeCompare(a.name);
-                default:
-                    return 0;
-            }
-        });
-
-        this.renderPDFs();
-    }
-
-    formatDate(timestamp) {
-        return new Date(timestamp.seconds * 1000).toLocaleDateString();
-    }
-
-    showNotification(message, type) {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    }
-}
-
-// Initialize PDF manager
-const pdfManager = new PDFManager();
 
 
 
