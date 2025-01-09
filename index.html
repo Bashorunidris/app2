@@ -1042,6 +1042,49 @@ details select {
         transform: translateY(0);
     }
 }
+
+.profile-container {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-image-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.profile-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    color: white;
+}
+
+.profile-image-container:hover .image-overlay {
+    opacity: 1;
+}
+
 .feedback-trigger {
     position: fixed;
     bottom: 20px;
@@ -1558,18 +1601,18 @@ details select {
             <!-- Profile Trigger -->
             <details>
                 <summary>Profile</summary>
-                <div>
-                    <img src="default-avatar.png" alt="Profile Picture" width="100" height="100">
-                    <h3>User Name</h3>
-                    <p>user@email.com</p>
-                    <select>
-                        <option value="😊">😊</option>
-                        <option value="😎">😎</option>
-                        <option value="🤓">🤓</option>
-                        <option value="😇">😇</option>
-                    </select>
-                    <button>Close</button>
-                </div>
+                <div class="profile-container">
+        
+        <h3 id="profileName">User Name</h3>
+        <p id="profileEmail">user@email.com</p>
+        <select id="profileEmoji">
+            <option value="😊">😊</option>
+            <option value="😎">😎</option>
+            <option value="🤓">🤓</option>
+            <option value="😇">😇</option>
+        </select>
+        <button id="closeProfile">Close</button>
+    </div>
             </details>
         </header>
 
@@ -1967,50 +2010,16 @@ details select {
     </button>
     
     <div class="editor-tools-dropdown" id="editorTools">
-        <table class="tools-table">
-            <tr>
-                <td class="tool-cell" title="Font Size">
-                    <i class="fas fa-text-height"></i>
-                </td>
-                <td class="tool-cell" title="Bold">
-                    <i class="fas fa-bold"></i>
-                </td>
-                <td class="tool-cell" title="Underline">
-                    <i class="fas fa-underline"></i>
-                </td>
-                <td class="tool-cell" title="Text Style">
-                    <i class="fas fa-font"></i>
-                </td>
-            </tr>
-            <tr>
-                <td class="tool-cell" title="Add Table">
-                    <i class="fas fa-table"></i>
-                </td>
-                <td class="tool-cell" title="Undo">
-                    <i class="fas fa-undo"></i>
-                </td>
-                <td class="tool-cell" title="Redo">
-                    <i class="fas fa-redo"></i>
-                </td>
-                <td class="tool-cell" title="Add Image">
-                    <i class="fas fa-image"></i>
-                </td>
-            </tr>
-            <tr>
-                <td class="tool-cell" title="List">
-                    <i class="fas fa-list"></i>
-                </td>
-                <td class="tool-cell" title="Link">
-                    <i class="fas fa-link"></i>
-                </td>
-                <td class="tool-cell" title="Code">
-                    <i class="fas fa-code"></i>
-                </td>
-                <td class="tool-cell" title="Settings">
-                    <i class="fas fa-cog"></i>
-                </td>
-            </tr>
-        </table>
+        <div class="editor-tool" title="Undo">
+        <i class="fas fa-undo"></i>
+    </div>
+    <div class="editor-tool" title="Redo">
+        <i class="fas fa-redo"></i>
+    </div>
+    <div class="editor-tool" title="Add Image">
+        <i class="fas fa-image"></i>
+    </div>
+    
     </div>
 </div>
 
@@ -2042,21 +2051,7 @@ details select {
                 <div class="nigerian-page">
                     <!-- Left side holes with editor tools -->
                    <div class="holes">
-    <div class="editor-tool" title="Font Size">
-        <i class="fas fa-text-height"></i>
-    </div>
-    <div class="editor-tool" title="Bold">
-        <i class="fas fa-bold"></i>
-    </div>
-    <div class="editor-tool" title="Underline">
-        <i class="fas fa-underline"></i>
-    </div>
-    <div class="editor-tool" title="Text Style">
-        <i class="fas fa-font"></i>
-    </div>
-    <div class="editor-tool" title="Add Table">
-        <i class="fas fa-table"></i>
-    </div>
+    
     <div class="editor-tool" title="Undo">
         <i class="fas fa-undo"></i>
     </div>
@@ -2066,18 +2061,7 @@ details select {
     <div class="editor-tool" title="Add Image">
         <i class="fas fa-image"></i>
     </div>
-    <div class="editor-tool" title="List">
-        <i class="fas fa-list"></i>
-    </div>
-    <div class="editor-tool" title="Link">
-        <i class="fas fa-link"></i>
-    </div>
-    <div class="editor-tool" title="Code">
-        <i class="fas fa-code"></i>
-    </div>
-    <div class="editor-tool" title="Settings">
-        <i class="fas fa-cog"></i>
-    </div>
+    
 </div>
 
 
@@ -2462,12 +2446,19 @@ fileInput.addEventListener('change', async (e) => {
         const fileRef = storageRef.child(`profilePictures/${auth.currentUser.uid}`);
 
         try {
-            await fileInput.put(file);
+            // Upload the file to Firebase Storage
+            await fileRef.put(file);
             const url = await fileRef.getDownloadURL();
+            
+            // Update user profile
             await auth.currentUser.updateProfile({ photoURL: url });
+            
+            // Update database
             await db.collection('users').doc(auth.currentUser.uid).update({
                 photoURL: url
             });
+            
+            // Update UI
             profileImage.src = url;
             showNotification('Profile picture updated successfully!');
         } catch (error) {
@@ -2490,20 +2481,28 @@ emojiSelect.addEventListener('change', async () => {
 
 // Profile Loading
 async function loadProfile(user) {
-    const userDoc = await db.collection('users').doc(user.uid).get();
-    const userData = userDoc.data();
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
 
-    profileName.textContent = userData.name;
-    profileEmail.textContent = userData.email;
+        // Update profile information
+        profileName.textContent = userData.name;
+        profileEmail.textContent = userData.email;
 
-    if (userData.photoURL) {
-        profileImage.src = userData.photoURL;
-    }
+        // Set profile image if exists
+        if (userData.photoURL) {
+            profileImage.src = userData.photoURL;
+        }
 
-    if (userData.emoji) {
-        emojiSelect.value = userData.emoji;
+        // Set emoji if exists
+        if (userData.emoji) {
+            emojiSelect.value = userData.emoji;
+        }
+    } catch (error) {
+        showNotification('Error loading profile: ' + error.message, 'error');
     }
 }
+
 
 // Notebook Creation
 const notebookForm = document.getElementById('notebook-form');
